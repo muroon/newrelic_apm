@@ -3,18 +3,18 @@
 ## Setup
 
 ```
-	newrelicAppName := os.Getenv("NEW_RELIC_APP_NAME") // example: isucon9-qualify-muroon
-	newrelicLicense := os.Getenv("NEW_RELIC_LICENSE")
-	err = apm.Setup(newrelicAppName, newrelicLicense)
-	if err != nil {
-		log.Fatalf("failed to NewRelic: %s.", err.Error())
-	}
+newrelicAppName := os.Getenv("NEW_RELIC_APP_NAME") // example: isucon9-qualify-muroon
+newrelicLicense := os.Getenv("NEW_RELIC_LICENSE")
+err = apm.Setup(newrelicAppName, newrelicLicense)
+if err != nil {
+	log.Fatalf("failed to NewRelic: %s.", err.Error())
+}
 ```
 
 ## HTTP Handler
 
 ```
-	apm.HandleFunc(mux, pat.Post("/initialize"), postInitialize)
+apm.HandleFunc(mux, pat.Post("/initialize"), postInitialize)
 ```
 
 ## MiddlewareNewRelicTransaction
