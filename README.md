@@ -1,6 +1,6 @@
 # newrelic_apm
 
-## set up
+## Setup
 
 ```
 	newrelicAppName := os.Getenv("NEW_RELIC_APP_NAME") // example: isucon9-qualify-muroon
@@ -11,11 +11,37 @@
 	}
 ```
 
-
-## handler
+## HTTP Handler
 
 ```
 	apm.HandleFunc(mux, pat.Post("/initialize"), postInitialize)
+```
+
+## MiddlewareNewRelicTransaction
+NewRelic Transactionのミドルウェアを設定
+
+```
+mux := goji.NewMux()
+mux.Use(apm.MiddlewareNewRelicTransaction)
+
+// API
+mux.HandleFunc(pat.Post("/initialize"), postInitialize)
+mux.HandleFunc(pat.Get("/new_items.json"), getNewItems)
+(省略)
+```
+
+## RequestWithContext
+http.RequestにNewRelicのコンテキストを付与
+```
+var (
+	client = &http.Client{
+		Transport: newrelic.NewRoundTripper(nil),
+	}
+)
+
+(省略)
+
+res, err := client.Do(apm.RequestWithContext(ctx, req))
 ```
 
 ## reference
