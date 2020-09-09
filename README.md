@@ -44,6 +44,21 @@ var (
 res, err := client.Do(apm.RequestWithContext(ctx, req))
 ```
 
+## GetClient
+```
+req, err := http.newrequest(http.methodpost, url, bytes.newbuffer(b))
+req.header.set("user-agent", useragent)
+req.header.set("content-type", "application/json")
+
+res, err := getclient().do(req)
+```
+
+## RequestDoWithContext
+RequestWithContextとGetClientと送信(cliend.Do)をまとめて行う
+```
+res, err := apm.RequestDoWithContext(ctx, req)
+```
+
 ## reference
 
 https://github.com/muroon/isucon9-qualify/commit/9e0d5df64bd747288e1b49c1e680dd56dd75e771#diff-10a40f961254d187b7cb202a0c22bca0
