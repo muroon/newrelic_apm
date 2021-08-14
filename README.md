@@ -59,6 +59,22 @@ RequestWithContextとGetClientと送信(cliend.Do)をまとめて行う
 res, err := apm.RequestDoWithContext(ctx, req)
 ```
 
+## StartDatastoreSegment
+DB(MySQL)のAPM
+
+使用例
+```
+// tx is parent APM transaction
+s := apm.startdatastoresegment(tx, "select * from `categories` where `id` = ?", categoryid)
+err = sqlx.get(q, &category, "select * from `categories` where `id` = ?", categoryid)
+s.End()
+```
+
+使用するにはDB情報を事前にセット(必須ではない)
+```
+apm.SetupDB(host, port, dbname)
+```
+
 ## reference
 
 https://github.com/muroon/isucon9-qualify/commit/9e0d5df64bd747288e1b49c1e680dd56dd75e771#diff-10a40f961254d187b7cb202a0c22bca0
