@@ -1,10 +1,11 @@
 package apm
 
 import (
-	"github.com/newrelic/go-agent/v3/newrelic"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/newrelic/go-agent/v3/newrelic"
 )
 
 // SetupDB setup DB info
@@ -22,7 +23,7 @@ type DatastoreSegment struct {
 }
 
 func (d DatastoreSegment) End() {
-	if isEnable() {
+	if IsEnable() {
 		d.seg.End()
 	}
 }
@@ -30,7 +31,7 @@ func (d DatastoreSegment) End() {
 // StartDatastoreSegment (NoWeb)Datastore用セグメント開始
 func StartDatastoreSegment(tx *Transaction, query string, params ...interface{}) DatastoreSegment {
 	d := DatastoreSegment{}
-	if tx.txn != nil && isEnable() {
+	if tx.txn != nil && IsEnable() {
 		d.seg = createDataStoreSegment(tx, query, params...)
 	}
 	return d
