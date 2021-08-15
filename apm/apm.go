@@ -2,15 +2,16 @@ package apm
 
 import (
 	"context"
+	"net/http"
+
 	goji "goji.io"
 	"goji.io/pat"
-	"net/http"
 
 	"github.com/newrelic/go-agent/v3/newrelic"
 )
 
 var (
-	app *newrelic.Application
+	app    *newrelic.Application
 	client = &http.Client{
 		Transport: newrelic.NewRoundTripper(nil),
 	}
@@ -119,4 +120,8 @@ func GetClient() *http.Client {
 func RequestDoWithContext(ctx context.Context, req *http.Request) (*http.Response, error) {
 	req = RequestWithContext(ctx, req)
 	return GetClient().Do(req)
+}
+
+func GetApp() *newrelic.Application {
+	return app
 }
