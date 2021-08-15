@@ -6,17 +6,17 @@ import (
 )
 
 // MiddlewareNewRelicEcho echo middleware
-func MiddlewareNewRelicEcho(e *echo.Echo)  {
-	if isEnable() {
+func MiddlewareNewRelicEcho(e *echo.Echo) {
+	if IsEnable() {
 		e.Use(nrecho.Middleware(app))
 	}
 }
 
 // TransactionFromEchoContext get Transaction from echo.Context
-func TransactionFromEchoContext(c echo.Context) *Transaction{
+func TransactionFromEchoContext(c echo.Context) *Transaction {
 	st := new(Transaction)
-	if isEnable() {
-		st.txn =  nrecho.FromContext(c)
+	if IsEnable() {
+		st.txn = nrecho.FromContext(c)
 	}
 	return st
 }

@@ -48,7 +48,7 @@ func Setup(appName string, license string) (err error) {
 // TODO:問題によっては引数が変わる
 func HandleFunc(mux *goji.Mux, pattern *pat.Pattern, hdl http.HandlerFunc) {
 	whdl := hdl
-	if isEnable() {
+	if IsEnable() {
 		_, whdl = newrelic.WrapHandleFunc(app, pattern.String(), hdl)
 	}
 	mux.HandleFunc(pattern, whdl)
@@ -58,7 +58,7 @@ func HandleFunc(mux *goji.Mux, pattern *pat.Pattern, hdl http.HandlerFunc) {
 // TODO:問題によっては引数が変わる
 func Handle(mux *goji.Mux, pattern *pat.Pattern, hdl http.Handler) {
 	whdl := hdl
-	if isEnable() {
+	if IsEnable() {
 		_, whdl = newrelic.WrapHandle(app, pattern.String(), hdl)
 	}
 	mux.Handle(pattern, whdl)
@@ -67,19 +67,19 @@ func Handle(mux *goji.Mux, pattern *pat.Pattern, hdl http.Handler) {
 // StartTransaction (NoWeb)トランザクション開始
 func StartTransaction(name string) *Transaction {
 	st := new(Transaction)
-	if isEnable() {
+	if IsEnable() {
 		st.txn = app.StartTransaction(name)
 	}
 	return st
 }
 
-func isEnable() bool {
+func IsEnable() bool {
 	return app != nil
 }
 
 // MiddlewareNewRelicTransaction to create/end NewRelic transaction
 func MiddlewareNewRelicTransaction(inner http.Handler) http.Handler {
-	if !isEnable() {
+	if !IsEnable() {
 		mw := func(w http.ResponseWriter, r *http.Request) {
 			inner.ServeHTTP(w, r)
 		}
@@ -99,7 +99,7 @@ func MiddlewareNewRelicTransaction(inner http.Handler) http.Handler {
 
 // RequestWithContext RequestにNewRelicのContextをつける
 func RequestWithContext(ctx context.Context, req *http.Request) *http.Request {
-	if !isEnable() {
+	if !IsEnable() {
 		return req
 	}
 	txn := newrelic.FromContext(ctx)
@@ -109,7 +109,7 @@ func RequestWithContext(ctx context.Context, req *http.Request) *http.Request {
 
 // GetClient リクエスト送信クライアントを返す
 func GetClient() *http.Client {
-	if !isEnable() {
+	if !IsEnable() {
 		return DefaultClient
 	}
 
